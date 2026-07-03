@@ -1,0 +1,7 @@
+data/raw/
+.Rhistory
+.RData
+.RDataTmp*
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
