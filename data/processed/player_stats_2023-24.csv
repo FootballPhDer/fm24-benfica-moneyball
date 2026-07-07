@@ -29,3 +29,33 @@ Bah,Benfica,Cup,3,0,0,0,0,0,0,2,0,3.54,89,1.97,,3,1,6.60
 Bah,Benfica,Continental,8,0,0,0,0,0,0,1,0,1.69,88,2.54,50,4,4,6.75
 Bah,Benfica,International,2,1,0,0,0,1,0,1,0,3.58,85,8.34,33,1,1,7.13
 Bah,Benfica,Overall (Club),36,0,0,0,0,2,1,4,0,2.68,89,2.44,40,30,39,6.96
+Cabral,Benfica,Non Competitive,1,2,0,0,0,0,0,0,0,,100,2.25,,1,1,6.60
+Cabral,Benfica,League,23,1,17,1,1,1,3,1,0,0.58,82,0.58,60,14,21,7.21
+Cabral,Benfica,Cup,6,0,7,1,1,1,1,0,0,0.38,85,0.76,66,6,6,7.53
+Cabral,Benfica,Continental,7,0,4,0,0,0,0,0,0,1.04,81,1.04,62,7,3,7.01
+Cabral,Benfica,International,0,0,,,,,,,,,,,,,,
+Cabral,Benfica,Overall (Club),36,1,28,2,2,2,4,1,0,0.65,82,0.72,62,27,30,7.23
+Florentino,Benfica,Non Competitive,2,2,0,0,0,0,0,0,0,3.55,86,0.39,,1,1,6.82
+Florentino,Benfica,League,25,3,1,0,0,5,2,0,0,2.28,89,0.80,21,15,26,7.23
+Florentino,Benfica,Cup,2,0,0,0,0,0,0,1,0,1.93,90,,,3,2,6.60
+Florentino,Benfica,Continental,7,1,1,0,0,1,0,2,0,3.10,89,0.62,100,6,1,7.27
+Florentino,Benfica,International,1,4,0,0,0,0,0,0,0,1.61,88,1.07,100,2,2,6.97
+Florentino,Benfica,Overall (Club),34,4,2,0,0,5,3,3,0,2.43,89,0.73,22,24,29,7.21
+Rollheiser,Benfica (loan),Non Competitive,3,2,1,0,0,2,0,1,0,1.75,89,2.05,33,1,6,7.04
+Rollheiser,Benfica (loan),League,5,6,2,0,0,1,1,0,0,1.28,90,1.28,26,7,3,6.99
+Rollheiser,Benfica (loan),Cup,5,0,2,0,0,0,0,0,0,0.90,85,3.38,58,1,8,7.02
+Rollheiser,Benfica (loan),Continental,0,2,0,0,0,0,0,0,0,,,,,0,1,6.75
+Rollheiser,Benfica (loan),International,0,0,,,,,,,,,,,,,,
+Rollheiser,Benfica (loan),Overall (Club),10,8,4,0,0,1,0,1,0,1.25,87,2.31,38,8,12,6.97
+Aguirre,Benfica,Non Competitive,0,0,,,,,,,,,,,,,,
+Aguirre,Benfica,League,15,7,0,0,0,0,0,4,0,2.95,89,1.90,,11,16,7.07
+Aguirre,Benfica,Cup,5,1,0,0,0,1,0,0,0,3.45,91,1.45,,2,2,7.02
+Aguirre,Benfica,Continental,3,3,0,0,0,0,0,1,0,3.40,92,2.55,,5,3,6.74
+Aguirre,Benfica,International,0,0,,,,,,,,,,,,,,
+Aguirre,Benfica,Overall (Club),23,11,0,0,0,1,0,5,0,3.12,90,1.90,,18,21,7.01
+Jurasek,TSG Hoffenheim (loan),Non Competitive,1,1,0,0,0,0,0,0,0,1.53,81,2.29,,3,1,6.75
+Jurasek,TSG Hoffenheim (loan),League,0,7,0,0,0,0,0,0,0,,,,,1,0,6.50
+Jurasek,TSG Hoffenheim (loan),Cup,0,0,,,,,,,,,,,,,,
+Jurasek,TSG Hoffenheim (loan),Continental,0,0,,,,,,,,,,,,,,
+Jurasek,TSG Hoffenheim (loan),International,5,1,0,0,0,0,0,0,0,2.60,86,2.42,,4,2,6.84
+Jurasek,TSG Hoffenheim (loan),Overall (Club),0,7,0,0,0,0,0,0,0,,,,,1,0,6.50
