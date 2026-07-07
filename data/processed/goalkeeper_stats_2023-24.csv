@@ -1,0 +1,7 @@
+player,team,competition,starts,sub_apps,goals_allowed,goals_scored,clean_sheets,pom,yellow,red,tackles_won_per90,goals_allowed_per90,pass_pct,dribbles_per90,shots_on_target_against_pct,fouls,fouls_against,avg_rating
+Trubin,Benfica,Non Competitive,2,0,3,0,0,0,0,0,,1.50,65,,,0,0,6.85
+Trubin,Benfica,League,30,0,18,0,19,0,0,0,0.03,0.60,94,,,0,0,7.10
+Trubin,Benfica,Cup,2,0,2,0,0,0,0,0,,0.86,92,,,0,0,6.80
+Trubin,Benfica,Continental,8,0,7,0,3,0,0,0,,0.84,86,,,0,0,6.91
+Trubin,Benfica,International,5,0,5,0,2,0,0,0,0.19,0.94,66,,,0,0,7.14
+Trubin,Benfica,Overall (Club),40,0,27,0,22,0,0,0,0.02,0.66,92,,,0,0,7.05
