@@ -1,0 +1,31 @@
+player,team,competition,starts,sub_apps,goals,pens_scored,pens_attempted,assists,pom,yellow,red,tackles_won_per90,pass_pct,dribbles_per90,shots_on_target_pct,fouls,fouls_against,avg_rating
+Otamendi,Benfica,Non Competitive,4,0,0,0,0,0,0,0,0,1.00,93,,,0,0,6.75
+Otamendi,Benfica,League,24,3,1,0,0,0,0,2,0,0.75,95,0.10,36,12,1,6.86
+Otamendi,Benfica,Cup,7,1,0,0,0,1,0,2,0,1.97,95,0.14,100,4,2,6.91
+Otamendi,Benfica,Continental,8,0,0,0,0,0,0,0,0,1.08,93,,,3,0,6.84
+Otamendi,Benfica,International,2,1,0,0,0,0,0,1,0,1.34,95,,50,1,0,6.77
+Otamendi,Benfica,Overall (Club),39,4,1,0,0,1,0,4,0,1.08,95,0.08,47,19,3,6.86
+Joao Mario,Benfica,Non Competitive,2,1,0,0,0,0,0,0,0,,83,1.80,,1,1,6.50
+Joao Mario,Benfica,League,13,8,7,3,2,7,1,1,0,1.92,86,2.61,51,16,32,7.19
+Joao Mario,Benfica,Cup,3,1,1,1,0,0,0,0,0,1.76,86,3.53,50,1,3,6.80
+Joao Mario,Benfica,Continental,3,3,1,0,0,2,1,0,0,1.61,85,3.23,75,3,2,7.12
+Joao Mario,Benfica,International,0,0,,,,,,,,,,,,,,
+Joao Mario,Benfica,Overall (Club),19,12,9,4,2,9,2,1,0,1.85,86,2.85,54,20,37,7.12
+Meite,PAOK (loan),Non Competitive,0,0,,,,,,,,,,,,,,
+Meite,PAOK (loan),League,17,0,1,0,0,1,0,2,0,2.10,90,0.49,28,25,16,6.75
+Meite,PAOK (loan),Cup,0,0,,,,,,,,,,,,,,
+Meite,PAOK (loan),Continental,14,0,1,0,0,2,1,0,0,1.77,90,0.42,11,20,7,6.99
+Meite,PAOK (loan),International,0,6,0,0,0,0,0,0,0,0.79,90,,,,,6.58
+Meite,PAOK (loan),Overall (Club),31,0,2,0,0,3,1,2,0,1.95,90,0.46,18,45,23,6.86
+Aursnes,Benfica,Non Competitive,3,0,0,0,0,1,0,0,0,2.83,92,,57,1,1,7.07
+Aursnes,Benfica,League,20,4,2,0,0,7,1,5,0,2.30,88,1.35,43,31,12,7.15
+Aursnes,Benfica,Cup,3,1,0,0,0,0,0,1,0,1.62,90,0.65,,2,2,6.83
+Aursnes,Benfica,Continental,8,0,0,0,0,1,0,2,0,3.05,91,0.93,,14,5,6.96
+Aursnes,Benfica,International,12,0,2,0,0,3,1,4,0,1.49,86,0.93,52,17,5,6.98
+Aursnes,Benfica,Overall (Club),31,5,2,0,0,8,1,8,0,2.42,89,1.16,34,47,14,7.07
+Bah,Benfica,Non Competitive,4,0,0,0,0,0,0,1,0,2.81,90,3.07,,4,1,6.82
+Bah,Benfica,League,25,0,0,0,0,2,1,1,0,2.88,89,2.46,40,19,34,7.07
+Bah,Benfica,Cup,3,0,0,0,0,0,0,2,0,3.54,89,1.97,,3,1,6.60
+Bah,Benfica,Continental,8,0,0,0,0,0,0,1,0,1.69,88,2.54,50,4,4,6.75
+Bah,Benfica,International,2,1,0,0,0,1,0,1,0,3.58,85,8.34,33,1,1,7.13
+Bah,Benfica,Overall (Club),36,0,0,0,0,2,1,4,0,2.68,89,2.44,40,30,39,6.96
