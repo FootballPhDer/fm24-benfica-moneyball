@@ -1,0 +1,347 @@
+<title>Player Style Clusters — Benfica 2024/25</title>
+<style>
+  :root {
+    --bg: #0f1613;
+    --surface: #182420;
+    --surface-2: #1f2f29;
+    --border: #2b3b34;
+    --text: #ede6d8;
+    --text-muted: #9caa9e;
+    --accent: #e2231a;
+    --accent-soft: #e2231a33;
+
+    --c0: #d9a441; /* progressive creators */
+    --c1: #e2694b; /* direct creators / wingers */
+    --c2: #5b8aa6; /* ball-playing defenders */
+    --c3: #c4708a; /* pure strikers */
+    --c4: #5fa88c; /* attacking full-backs */
+    --c5: #9678a6; /* high-output attackers, lower control */
+  }
+  :root[data-theme="light"] {
+    --bg: #f3f0e7;
+    --surface: #ffffff;
+    --surface-2: #ece6d8;
+    --border: #ddd5c2;
+    --text: #201c14;
+    --text-muted: #6b6353;
+    --accent: #c81e16;
+    --accent-soft: #c81e1622;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f3f0e7;
+      --surface: #ffffff;
+      --surface-2: #ece6d8;
+      --border: #ddd5c2;
+      --text: #201c14;
+      --text-muted: #6b6353;
+      --accent: #c81e16;
+      --accent-soft: #c81e1622;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+  }
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .eyebrow {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  h1 {
+    font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin: 0.2rem 0 0.4rem;
+    text-wrap: balance;
+  }
+  .lede {
+    color: var(--text-muted);
+    max-width: 62ch;
+    font-size: 0.98rem;
+  }
+  .lede strong { color: var(--text); font-weight: 600; }
+
+  .board {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 1.5rem;
+  }
+  @media (max-width: 860px) {
+    .board { grid-template-columns: 1fr; }
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .chart-panel { padding: 1.25rem 1.25rem 0.75rem; position: relative; }
+  .chart-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .chart-title { font-weight: 700; font-size: 0.95rem; }
+  .chart-sub { font-size: 0.78rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+  svg#scatter { width: 100%; height: auto; display: block; touch-action: none; }
+  svg#scatter .axis-line { stroke: var(--border); stroke-width: 0.02; }
+  svg#scatter .dot { cursor: pointer; transition: opacity 120ms ease; stroke: var(--bg); stroke-width: 0.03; }
+  svg#scatter .dot.dim { opacity: 0.12; }
+  svg#scatter .dot.focus { stroke: var(--text); stroke-width: 0.06; }
+  svg#scatter .label {
+    font-size: 0.34px;
+    font-weight: 700;
+    fill: var(--text);
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.78rem;
+    min-width: 170px;
+    opacity: 0;
+    transform: translate(-50%, -110%);
+    transition: opacity 100ms ease;
+    z-index: 5;
+  }
+  .tooltip.show { opacity: 1; }
+  .tooltip .tname { font-weight: 700; margin-bottom: 0.15rem; }
+  .tooltip .tpos { color: var(--text-muted); font-size: 0.72rem; margin-bottom: 0.4rem; }
+  .tooltip .trow {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .tooltip .trow span:first-child { color: var(--text-muted); }
+
+  .sidebar { display: flex; flex-direction: column; gap: 1rem; }
+  .legend { padding: 1.1rem; }
+  .legend h2 {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 0 0 0.75rem;
+  }
+  .legend-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    padding: 0.4rem 0.35rem;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+  .legend-item:hover { background: var(--surface-2); }
+  .legend-item.active { border-color: var(--border); background: var(--surface-2); }
+  .swatch {
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 50%;
+    margin-top: 0.3rem;
+    flex-shrink: 0;
+  }
+  .legend-item .lname { font-weight: 700; font-size: 0.84rem; }
+  .legend-item .ldesc { font-size: 0.74rem; color: var(--text-muted); }
+
+  .callout { padding: 1.1rem; }
+  .callout h2 {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+  }
+  .callout p { font-size: 0.85rem; margin: 0 0 0.6rem; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout .name { font-weight: 700; }
+
+  footer {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+  }
+</style>
+
+<div class="wrap">
+  <div>
+    <div class="eyebrow">FM24 Benfica Moneyball — 2024/25 Season</div>
+    <h1>Player style clusters, from stats alone</h1>
+    <p class="lede">
+      Every Benfica squad player and identified scouting target, reduced to two dimensions
+      from 18 performance stats (xG, xA, tackles, interceptions, progression, distance covered)
+      and grouped by <strong>k-means clustering</strong> — no position labels or FM role ratings
+      used as inputs. Hover a dot for details; click a cluster in the legend to isolate it.
+    </p>
+  </div>
+
+  <div class="board">
+    <div class="panel chart-panel">
+      <div class="chart-head">
+        <div class="chart-title">Principal component projection</div>
+        <div class="chart-sub" id="chart-sub"></div>
+      </div>
+      <svg id="scatter" viewBox="-7 -6.5 14 13" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Scatter plot of player style clusters">
+        <line class="axis-line" x1="-7" y1="0" x2="7" y2="0"></line>
+        <line class="axis-line" x1="0" y1="-6.5" x2="0" y2="6.5"></line>
+        <g id="dots"></g>
+        <g id="labels"></g>
+      </svg>
+      <div class="tooltip" id="tooltip">
+        <div class="tname" id="tt-name"></div>
+        <div class="tpos" id="tt-pos"></div>
+        <div class="trow"><span>xG</span><span id="tt-xg"></span></div>
+        <div class="trow"><span>xA</span><span id="tt-xa"></span></div>
+        <div class="trow"><span>Poss. won/90</span><span id="tt-pw"></span></div>
+        <div class="trow"><span>Pass %</span><span id="tt-pp"></span></div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="panel legend" id="legend"></div>
+      <div class="panel callout">
+        <h2>The Neves question</h2>
+        <p><span class="name">João Neves</span>, <span class="name">Javi Guerra</span>, and
+        <span class="name">Rafael Luís</span> all land in the same cluster, close together —
+        independent statistical confirmation that Guerra and the club's own academy prospect
+        share Neves's on-pitch profile, separate from what FM's role stars say.</p>
+        <p><span class="name">Tiago Gouveia</span> sits at the edge of the direct-creator
+        cluster, apart from the pack — his output this season is a statistical outlier even
+        among attacking players.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Method: 18 per-90 and rate stats standardized, reduced via PCA (2 components, ~58% variance
+    explained), clustered with k-means (k=6). Players with fewer than 10 apps or incomplete
+    stats excluded. Unscouted players (name hidden by scouting knowledge) excluded from display.
+  </footer>
+</div>
+
+<script>
+const DATA = [{"n":"Nicolás Otamendi","p":"D (RC)","s":"Benfica Squad","c":2,"x":3.335,"y":-1.914,"xg":0.71,"xa":0.11,"pw":8.36,"pp":95.0,"ap":36.0},{"n":"Benjamín Rollheiser","p":"AM (RLC)","s":"Benfica Squad","c":1,"x":-5.803,"y":3.987,"xg":7.98,"xa":5.74,"pw":6.28,"pp":82.0,"ap":34.0},{"n":"Braian Aguirre","p":"D (RL), M (R)","s":"Benfica Squad","c":4,"x":0.586,"y":4.375,"xg":0.58,"xa":3.73,"pw":11.85,"pp":88.0,"ap":27.0},{"n":"Arthur Cabral","p":"ST (C)","s":"Benfica Squad","c":3,"x":-1.709,"y":-4.886,"xg":20.83,"xa":3.37,"pw":3.33,"pp":83.0,"ap":43.0},{"n":"Morato","p":"D (LC), DM","s":"Benfica Squad","c":4,"x":2.842,"y":1.14,"xg":4.52,"xa":2.23,"pw":14.54,"pp":90.0,"ap":43.0},{"n":"Marcos Leonardo","p":"AM (L), ST (C)","s":"Benfica Squad","c":3,"x":-1.685,"y":-1.402,"xg":11.01,"xa":4.07,"pw":6.08,"pp":84.0,"ap":45.0},{"n":"David Jurásek","p":"D/WB (L)","s":"Benfica Squad","c":4,"x":1.536,"y":3.788,"xg":0.7,"xa":4.33,"pw":10.36,"pp":87.0,"ap":32.0},{"n":"Alexander Bah","p":"D/WB/M/AM (R)","s":"Benfica Squad","c":4,"x":0.042,"y":4.128,"xg":2.02,"xa":5.04,"pw":11.29,"pp":88.0,"ap":30.0},{"n":"Orkun Kökçü","p":"DM, M/AM (C)","s":"Benfica Squad","c":1,"x":-5.065,"y":2.023,"xg":8.55,"xa":9.47,"pw":5.13,"pp":85.0,"ap":37.0},{"n":"Fredrik Aursnes","p":"DM, M (C)","s":"Benfica Squad","c":0,"x":-0.871,"y":2.005,"xg":3.21,"xa":5.66,"pw":7.8,"pp":91.0,"ap":39.0},{"n":"Tiago Dantas","p":"DM, M/AM (C)","s":"Benfica Squad","c":0,"x":-0.653,"y":0.697,"xg":1.59,"xa":2.99,"pw":6.1,"pp":88.0,"ap":26.0},{"n":"Tiago Gouveia","p":"AM (RL)","s":"Benfica Squad","c":1,"x":-5.048,"y":3.567,"xg":11.35,"xa":14.78,"pw":6.51,"pp":85.0,"ap":45.0},{"n":"Henrique Pereira","p":"AM (RL)","s":"Benfica Squad","c":1,"x":-2.537,"y":1.803,"xg":0.94,"xa":0.89,"pw":5.95,"pp":89.0,"ap":10.0},{"n":"Paulo Bernardo","p":"M (C)","s":"Benfica Squad","c":0,"x":-0.113,"y":0.641,"xg":3.26,"xa":5.55,"pw":11.55,"pp":88.0,"ap":35.0},{"n":"Gerson Sousa","p":"AM (RL)","s":"Benfica Squad","c":1,"x":-2.481,"y":1.563,"xg":4.68,"xa":4.23,"pw":5.72,"pp":84.0,"ap":25.0},{"n":"Martim Neto","p":"M (C)","s":"Benfica Squad","c":1,"x":-2.126,"y":1.74,"xg":5.35,"xa":5.41,"pw":7.41,"pp":86.0,"ap":18.0},{"n":"Rafael Luís","p":"DM, M (C)","s":"Benfica Squad","c":0,"x":-0.23,"y":0.974,"xg":2.79,"xa":2.83,"pw":6.99,"pp":89.0,"ap":29.0},{"n":"Pedro Santos","p":"M (C), AM (RLC)","s":"Benfica Squad","c":1,"x":-1.272,"y":0.33,"xg":4.14,"xa":6.42,"pw":9.87,"pp":86.0,"ap":29.0},{"n":"Francisco Domingues","p":"D/WB/M/AM (L)","s":"Benfica Squad","c":4,"x":1.62,"y":3.68,"xg":0.57,"xa":4.25,"pw":13.87,"pp":89.0,"ap":31.0},{"n":"Žan Jevšenak","p":"D (C), DM, M (C)","s":"Benfica Squad","c":0,"x":1.769,"y":1.219,"xg":2.39,"xa":4.89,"pw":12.72,"pp":88.0,"ap":32.0},{"n":"António Silva","p":"D (C)","s":"Benfica Squad","c":2,"x":4.23,"y":-1.542,"xg":2.98,"xa":0.95,"pw":11.1,"pp":95.0,"ap":42.0},{"n":"Ricardo Teixeira","p":"D (C)","s":"Benfica Squad","c":2,"x":5.091,"y":-1.244,"xg":0.83,"xa":0.56,"pw":12.0,"pp":93.0,"ap":34.0},{"n":"Hugo Félix","p":"M (C), AM (RLC)","s":"Benfica Squad","c":1,"x":-3.039,"y":1.699,"xg":7.89,"xa":7.81,"pw":4.69,"pp":86.0,"ap":36.0},{"n":"Soualiho Meïté","p":"DM, M (C)","s":"Benfica Squad","c":0,"x":1.71,"y":0.423,"xg":1.45,"xa":1.37,"pw":10.53,"pp":89.0,"ap":38.0},{"n":"Andreas Schjelderup","p":"M/AM (L), ST (C)","s":"Benfica Squad","c":1,"x":-4.3,"y":2.054,"xg":11.59,"xa":8.19,"pw":5.88,"pp":83.0,"ap":45.0},{"n":"José Melro","p":"AM (R), ST (C)","s":"Benfica Squad","c":3,"x":-0.906,"y":-2.815,"xg":5.85,"xa":2.72,"pw":2.26,"pp":86.0,"ap":31.0},{"n":"João Neves","p":"DM, M/AM (C)","s":"Benfica Squad","c":0,"x":-1.191,"y":1.649,"xg":5.05,"xa":8.26,"pw":7.47,"pp":90.0,"ap":43.0},{"n":"Gabriël Misehouy","p":"M (C), AM (RLC), ST (C)","s":"Benfica Squad","c":1,"x":-1.669,"y":-0.577,"xg":5.79,"xa":5.65,"pw":10.99,"pp":86.0,"ap":40.0},{"n":"Sebastián Boselli","p":"D (RLC)","s":"Benfica Squad","c":2,"x":2.715,"y":0.822,"xg":2.29,"xa":3.1,"pw":13.16,"pp":89.0,"ap":40.0},{"n":"Valentín Carboni","p":"AM (RC), ST (C)","s":"Benfica Squad","c":1,"x":-3.32,"y":1.172,"xg":5.75,"xa":6.53,"pw":5.06,"pp":83.0,"ap":19.0},{"n":"Gianluca Prestianni","p":"M (C), AM (RLC)","s":"Benfica Squad","c":1,"x":-0.913,"y":0.595,"xg":2.24,"xa":2.22,"pw":5.54,"pp":86.0,"ap":22.0},{"n":"Karel Mustmaa","p":"AM (L), ST (C)","s":"Benfica Squad","c":3,"x":-1.351,"y":-2.089,"xg":6.51,"xa":1.84,"pw":3.16,"pp":84.0,"ap":33.0},{"n":"João Rêgo","p":"M (L), AM (RLC), ST (C)","s":"Benfica Squad","c":1,"x":-1.766,"y":1.897,"xg":4.52,"xa":6.43,"pw":7.23,"pp":87.0,"ap":31.0},{"n":"João Veloso","p":"M/AM (C)","s":"Benfica Squad","c":0,"x":-0.709,"y":0.363,"xg":4.4,"xa":7.56,"pw":13.54,"pp":86.0,"ap":34.0},{"n":"Paul Okon","p":"DM","s":"Benfica Squad","c":0,"x":0.639,"y":0.31,"xg":2.75,"xa":5.72,"pw":13.74,"pp":89.0,"ap":37.0},{"n":"Robert Ramšak","p":"M (C), AM (RC), ST (C)","s":"Benfica Squad","c":3,"x":0.228,"y":-2.816,"xg":5.16,"xa":1.3,"pw":4.52,"pp":84.0,"ap":15.0},{"n":"André Gomes","p":"M/AM (C)","s":"Benfica Squad","c":0,"x":-0.827,"y":0.761,"xg":2.33,"xa":5.5,"pw":12.04,"pp":84.0,"ap":26.0},{"n":"Diogo Rocha","p":"D (C)","s":"Benfica Squad","c":2,"x":2.587,"y":-1.616,"xg":1.53,"xa":1.01,"pw":12.25,"pp":86.0,"ap":12.0},{"n":"Gonçalo Moreira","p":"AM (RLC)","s":"Benfica Squad","c":1,"x":-1.005,"y":0.432,"xg":6.16,"xa":6.24,"pw":11.44,"pp":86.0,"ap":37.0},{"n":"Guilherme Peixoto","p":"D/WB (R)","s":"Benfica Squad","c":4,"x":1.819,"y":2.538,"xg":0.92,"xa":0.84,"pw":11.65,"pp":83.0,"ap":11.0},{"n":"Jair Monteiro","p":"ST (C)","s":"Benfica Squad","c":3,"x":-0.34,"y":-3.435,"xg":8.16,"xa":1.88,"pw":2.05,"pp":86.0,"ap":27.0},{"n":"Martim Ferreira","p":"DM","s":"Benfica Squad","c":0,"x":1.479,"y":-1.031,"xg":0.56,"xa":4.07,"pw":12.45,"pp":87.0,"ap":11.0},{"n":"Tiago Parente","p":"D (RL), WB (L)","s":"Benfica Squad","c":4,"x":0.231,"y":4.326,"xg":1.61,"xa":4.72,"pw":14.09,"pp":88.0,"ap":40.0},{"n":"Yasin Özcan","p":"D (LC)","s":"Benfica Squad","c":2,"x":3.908,"y":-1.61,"xg":0.47,"xa":0.34,"pw":11.88,"pp":94.0,"ap":26.0},{"n":"Luka Topalović","p":"AM (C)","s":"Benfica Squad","c":3,"x":-0.293,"y":-1.805,"xg":3.71,"xa":0.96,"pw":3.74,"pp":92.0,"ap":13.0},{"n":"Duarte Soares","p":"D/WB (R)","s":"Benfica Squad","c":4,"x":1.332,"y":1.345,"xg":1.72,"xa":0.64,"pw":8.58,"pp":86.0,"ap":22.0},{"n":"João Capucho","p":"D/WB (L)","s":"Benfica Squad","c":4,"x":3.448,"y":3.869,"xg":0.03,"xa":1.06,"pw":11.03,"pp":86.0,"ap":26.0},{"n":"André Vakulyuk","p":"DM, M (C)","s":"Benfica Squad","c":0,"x":0.9,"y":-0.275,"xg":1.02,"xa":1.59,"pw":13.67,"pp":85.0,"ap":12.0},{"n":"Luís Brito","p":"AM (L)","s":"Benfica Squad","c":1,"x":-1.187,"y":0.831,"xg":2.07,"xa":0.13,"pw":4.18,"pp":86.0,"ap":11.0},{"n":"Khephren Thuram - French","p":"DM, M (C)","s":"Scouted","c":5,"x":-1.382,"y":-1.905,"xg":7.55,"xa":5.48,"pw":8.97,"pp":83.0,"ap":40.0},{"n":"Nico Williams - Spanish","p":"M/AM (RL)","s":"Scouted","c":1,"x":-2.653,"y":1.459,"xg":11.48,"xa":8.59,"pw":6.93,"pp":83.0,"ap":34.0},{"n":"Malick Thiaw - German","p":"D (C), DM, M (C)","s":"Scouted","c":2,"x":2.331,"y":-1.315,"xg":1.65,"xa":3.5,"pw":10.57,"pp":90.0,"ap":43.0},{"n":"Denis Zakaria - Swiss","p":"DM, M (C)","s":"Scouted","c":5,"x":-0.35,"y":-2.428,"xg":3.19,"xa":4.87,"pw":5.97,"pp":87.0,"ap":42.0},{"n":"Nicolás González - Argentinian","p":"M (R), AM (RL), ST (C)","s":"Scouted","c":1,"x":-2.717,"y":0.627,"xg":9.46,"xa":4.24,"pw":5.02,"pp":83.0,"ap":39.0},{"n":"João Pedro - Brazilian","p":"AM (RLC), ST (C)","s":"Scouted","c":1,"x":-2.27,"y":0.77,"xg":11.03,"xa":4.61,"pw":5.23,"pp":85.0,"ap":37.0},{"n":"Samuel Chukwueze - Nigerian","p":"M (R), AM (RL)","s":"Scouted","c":5,"x":-2.353,"y":-1.85,"xg":3.59,"xa":2.02,"pw":3.04,"pp":83.0,"ap":26.0},{"n":"Nicolò Zaniolo - Italian","p":"M (L), AM (RLC), ST (C)","s":"Scouted","c":5,"x":-1.965,"y":-2.811,"xg":5.26,"xa":2.62,"pw":3.86,"pp":80.0,"ap":33.0},{"n":"Moussa Diaby - French","p":"M (R), AM (RLC), ST (C)","s":"Scouted","c":1,"x":-2.83,"y":0.929,"xg":9.08,"xa":7.41,"pw":5.37,"pp":84.0,"ap":46.0},{"n":"Vanderson - Brazilian","p":"D/WB/M (R)","s":"Scouted","c":1,"x":-2.054,"y":1.235,"xg":2.31,"xa":11.68,"pw":6.67,"pp":85.0,"ap":40.0},{"n":"Michael Kayode - Italian","p":"D/WB (R)","s":"Scouted","c":4,"x":2.684,"y":2.887,"xg":3.07,"xa":6.19,"pw":15.83,"pp":90.0,"ap":45.0},{"n":"Javi Guerra - Spanish","p":"DM, M (RC), AM (C)","s":"Scouted","c":0,"x":0.74,"y":1.34,"xg":4.61,"xa":8.66,"pw":12.34,"pp":89.0,"ap":44.0},{"n":"Pape Matar Sarr - Senegalese","p":"DM, M (C)","s":"Scouted","c":0,"x":0.694,"y":1.748,"xg":5.11,"xa":9.84,"pw":12.55,"pp":90.0,"ap":45.0},{"n":"Travis Akomeah - English","p":"D (C)","s":"Scouted","c":2,"x":5.015,"y":-1.775,"xg":0.23,"xa":1.04,"pw":12.29,"pp":89.0,"ap":14.0}];
+
+const CLUSTERS = {
+  0: { name: "Progressive Creators", desc: "Deep-lying, high pass accuracy, wins the ball back, moves it forward — Neves's type.", color: "var(--c0)" },
+  1: { name: "Direct Creators / Wingers", desc: "High xG and xA, heavy dribbling, more end-product than distribution.", color: "var(--c1)" },
+  2: { name: "Ball-Playing Defenders", desc: "Elite pass accuracy, high aerial and possession-won, minimal attacking output.", color: "var(--c2)" },
+  3: { name: "Pure Strikers", desc: "Very high xG, little else — built to finish, not create or defend.", color: "var(--c3)" },
+  4: { name: "Attacking Full-backs", desc: "High tackles, interceptions and sprint volume with real progressive output.", color: "var(--c4)" },
+  5: { name: "High-Output, Low-Control", desc: "Strong xG/xA but weaker pass accuracy and possession retention.", color: "var(--c5)" },
+};
+
+const HIGHLIGHT = new Set(["João Neves", "Javi Guerra - Spanish", "Rafael Luís", "Tiago Gouveia", "Arthur Cabral"]);
+
+const dotsG = document.getElementById("dots");
+const labelsG = document.getElementById("labels");
+const tooltip = document.getElementById("tooltip");
+const chartPanel = document.querySelector(".chart-panel");
+document.getElementById("chart-sub").textContent = DATA.length + " players";
+
+let activeCluster = null;
+
+DATA.forEach((d, i) => {
+  const isHi = HIGHLIGHT.has(d.n);
+  const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circle.setAttribute("cx", d.x);
+  circle.setAttribute("cy", -d.y);
+  circle.setAttribute("r", isHi ? 0.22 : 0.13);
+  circle.setAttribute("fill", CLUSTERS[d.c].color);
+  circle.setAttribute("class", "dot" + (isHi ? " focus" : ""));
+  circle.dataset.cluster = d.c;
+  circle.dataset.idx = i;
+
+  circle.addEventListener("mouseenter", (e) => showTooltip(d, circle));
+  circle.addEventListener("mousemove", (e) => positionTooltip(circle));
+  circle.addEventListener("mouseleave", () => hideTooltip());
+
+  dotsG.appendChild(circle);
+
+  if (isHi) {
+    const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    label.setAttribute("x", d.x + 0.28);
+    label.setAttribute("y", -d.y + 0.12);
+    label.setAttribute("class", "label");
+    label.textContent = d.n.split(" - ")[0];
+    labelsG.appendChild(label);
+  }
+});
+
+function showTooltip(d, circle) {
+  document.getElementById("tt-name").textContent = d.n.split(" - ")[0];
+  document.getElementById("tt-pos").textContent = (d.p || "—") + " · " + d.s;
+  document.getElementById("tt-xg").textContent = d.xg.toFixed(2);
+  document.getElementById("tt-xa").textContent = d.xa.toFixed(2);
+  document.getElementById("tt-pw").textContent = d.pw.toFixed(2);
+  document.getElementById("tt-pp").textContent = d.pp.toFixed(0) + "%";
+  tooltip.classList.add("show");
+  positionTooltip(circle);
+}
+function positionTooltip(circle) {
+  const svg = document.getElementById("scatter");
+  const pt = svg.createSVGPoint();
+  pt.x = parseFloat(circle.getAttribute("cx"));
+  pt.y = parseFloat(circle.getAttribute("cy"));
+  const screenPt = pt.matrixTransform(svg.getScreenCTM());
+  const panelRect = chartPanel.getBoundingClientRect();
+  tooltip.style.left = (screenPt.x - panelRect.left) + "px";
+  tooltip.style.top = (screenPt.y - panelRect.top) + "px";
+}
+function hideTooltip() { tooltip.classList.remove("show"); }
+
+const legendEl = document.getElementById("legend");
+const heading = document.createElement("h2");
+heading.textContent = "Clusters";
+legendEl.appendChild(heading);
+
+Object.entries(CLUSTERS).forEach(([id, c]) => {
+  const item = document.createElement("div");
+  item.className = "legend-item";
+  item.dataset.cluster = id;
+  item.innerHTML = `<div class="swatch" style="background:${c.color}"></div>
+    <div><div class="lname">${c.name}</div><div class="ldesc">${c.desc}</div></div>`;
+  item.addEventListener("click", () => toggleCluster(id));
+  legendEl.appendChild(item);
+});
+
+function toggleCluster(id) {
+  activeCluster = activeCluster === id ? null : id;
+  document.querySelectorAll(".legend-item").forEach(el => {
+    el.classList.toggle("active", el.dataset.cluster === activeCluster);
+  });
+  document.querySelectorAll("#dots .dot").forEach(el => {
+    el.classList.toggle("dim", activeCluster !== null && el.dataset.cluster !== activeCluster);
+  });
+}
+</script>
