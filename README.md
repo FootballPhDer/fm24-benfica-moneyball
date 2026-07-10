@@ -21,8 +21,13 @@ Workflow:
 
 - `data/raw/` — raw FM HTML exports, one subfolder per season (gitignored, stays local)
 - `data/processed/` — cleaned CSVs, safe to commit
-- `scripts/` — parsing and cleaning scripts
+- `scripts/` — parsing and analysis scripts (`parse_export.py` for HTML→CSV, `cluster_players.py` for style clustering)
 - `notebooks/` — analysis notebooks
+- `visualizations/` — self-contained HTML data-viz pages, viewable standalone or hosted (e.g. GitHub Pages)
+
+## Analysis
+
+`scripts/cluster_players.py` runs PCA + k-means on performance stats (xG, xA, tackles, interceptions, progression, etc.) shared between the squad and scouting exports, to find natural player-style groupings independent of FM's own position/role labels — useful for sanity-checking "is this scouted target actually similar to the player we're trying to replace" against real output data rather than gut feel or in-game role stars. Output: `data/processed/<season>/player_clusters.csv` and an interactive chart in `visualizations/`.
 
 ## Season-end checklist
 
