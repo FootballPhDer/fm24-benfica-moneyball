@@ -22,6 +22,24 @@ import pandas as pd
 NUMERIC_CLEAN_RE = re.compile(r"[£$€,%]|\s*p/[aw]\b", re.IGNORECASE)
 APPS_RE = re.compile(r"^(\d+)\s*\((\d+)\)$")
 
+# FM's attribute columns are abbreviated, and "Nat" collides between Nationality and
+# Natural Fitness (pandas auto-suffixes the second one "Nat.1"). Expand everything to
+# full names so the CSV is usable without a legend.
+ATTRIBUTE_COLUMN_NAMES = {
+    "Acc": "Acceleration", "Aer": "Aerial Reach", "Agg": "Aggression", "Agi": "Agility",
+    "Ant": "Anticipation", "Bal": "Balance", "Bra": "Bravery", "Cmd": "Command of Area",
+    "Com": "Communication", "Cmp": "Composure", "Cnt": "Concentration", "Cor": "Corners",
+    "Cro": "Crossing", "Dec": "Decisions", "Dri": "Dribbling", "Ecc": "Eccentricity",
+    "Fin": "Finishing", "Fir": "First Touch", "Fla": "Flair", "Fre": "Free Kick Taking",
+    "Han": "Handling", "Hea": "Heading", "Jum": "Jumping Reach", "Kic": "Kicking",
+    "Ldr": "Leadership", "Lon": "Long Shots", "L Th": "Long Throws", "Mar": "Marking",
+    "Nat.1": "Natural Fitness", "OtB": "Off The Ball", "1v1": "One on Ones", "Pac": "Pace",
+    "Pas": "Passing", "Pen": "Penalty Taking", "Pos": "Positioning", "Pun": "Punching (Tendency)",
+    "Ref": "Reflexes", "TRO": "Rushing Out (Tendency)", "Sta": "Stamina", "Str": "Strength",
+    "Tck": "Tackling", "Tea": "Teamwork", "Tec": "Technique", "Thr": "Throwing",
+    "Vis": "Vision", "Wor": "Work Rate",
+}
+
 
 def clean_numeric(val):
     if not isinstance(val, str):
@@ -81,6 +99,7 @@ def parse_file(html_path: Path, output_folder: Path):
 
     df = max(tables, key=len)  # FM export files sometimes wrap the table in extra markup
     df.columns = [str(c).strip() for c in df.columns]
+    df = df.rename(columns=ATTRIBUTE_COLUMN_NAMES)
 
     for col in list(df.columns):
         if "value" in col.lower():
