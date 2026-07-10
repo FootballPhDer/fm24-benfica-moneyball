@@ -19,7 +19,7 @@ from pathlib import Path
 
 import pandas as pd
 
-NUMERIC_CLEAN_RE = re.compile(r"[£$€,%]|\s*p/[aw]\b", re.IGNORECASE)
+NUMERIC_CLEAN_RE = re.compile(r"[£$€,%]|\s*p/[aw]\b|mi\b", re.IGNORECASE)
 APPS_RE = re.compile(r"^(\d+)\s*\((\d+)\)$")
 
 # FM's attribute columns are abbreviated, and "Nat" collides between Nationality and
