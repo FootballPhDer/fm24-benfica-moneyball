@@ -1,4 +1,5 @@
-player,age,position,nation,from_club,joining_date,current_wage_usd_pa,notes
-Ladislav Krejci,26,"D (C), DM",Czech Republic,Sparta Prague,7/1/2025,275000,"Ball-winning DM/CB profile (Bravery 16, Determination 16, Leadership 16, Tackling 14, Marking 14); 30 goals in 136 apps at Sparta suggests set-piece threat too"
-Mason Greenwood,23,"M/AM (R), AM (LC), ST (C)",England,Manchester United,7/2/2025,5190000,"High-output winger/forward (Finishing 16, Dribbling 16, First Touch 15, Flair 16); 7 goals in 37 La Liga apps on loan at Getafe this season; by far the highest wage of the three incomings"
-Vangelis Pavlidis,26,"ST (C), AM (RLC)",Greece,AZ Alkmaar,7/1/2025,214000,"Prolific striker (51 goals in 106 apps at AZ); 9 goals in 20 league apps this season; Finishing 15, Off The Ball 15"
+player,age,position,nation,from_club,joining_date,transfer_fee_usd,current_wage_usd_pa,notes
+Ladislav Krejci,26,"D (C), DM",Czech Republic,Sparta Prague,7/1/2025,0,275000,"Free/out-of-contract signing; Ball-winning DM/CB profile (Bravery 16, Determination 16, Leadership 16, Tackling 14, Marking 14); 30 goals in 136 apps at Sparta suggests set-piece threat too"
+Mason Greenwood,23,"M/AM (R), AM (LC), ST (C)",England,Manchester United,7/2/2025,0,5190000,"Free/out-of-contract signing; High-output winger/forward (Finishing 16, Dribbling 16, First Touch 15, Flair 16); 7 goals in 37 La Liga apps on loan at Getafe this season; by far the highest wage of the three incomings"
+Vangelis Pavlidis,26,"ST (C), AM (RLC)",Greece,AZ Alkmaar,7/1/2025,0,214000,"Free/out-of-contract signing; Prolific striker (51 goals in 106 apps at AZ); 9 goals in 20 league apps this season; Finishing 15, Off The Ball 15"
+Beraldo,21,"D (C), D (L), DM",Brazil,Paris Saint-Germain,,33000000,,"Offer accepted for $33M (asking was $26-39M); ball-playing CB signed as part of Morato replacement plan alongside Sangante pursuit"
