@@ -23,3 +23,15 @@ Workflow:
 - `data/processed/` — cleaned CSVs, safe to commit
 - `scripts/` — parsing and cleaning scripts
 - `notebooks/` — analysis notebooks
+
+## Season-end checklist
+
+Run through this every season, in order. Steps 1-3 are data collection; 4-7 are the actual football-management decisions the data should inform.
+
+1. **Performance review** — export the league table (your league + Champions League stage), your squad's full season stats, Real Madrid's squad stats, and your CL opponents' squad stats. Compare results against the goals-for/against targets from prior seasons.
+2. **Squad audit** — export/update squad data with age, contract length, and current ability/value. Flag anyone with 1 year left on their contract now.
+3. **Recruitment scouting** — export a wide player search (Primeira Liga at minimum, ideally top 5 leagues) with value, age, and output stats, timed to each transfer window rather than only season's end.
+4. **Needs analysis** — from the squad audit, rank position needs by urgency (genuine hole vs. depth).
+5. **Transfer business** — sell first, then buy, then loans (both incoming young loanees and outgoing fringe players). Log every fee (in or out) in `data/processed/player_info.csv`.
+6. **Contract renewals** — lock in good, cheap, homegrown players before their value/wage demands spike.
+7. **Pre-season** — note any tactical changes tested and fringe/youth players given a look, so next season's review has that context.
