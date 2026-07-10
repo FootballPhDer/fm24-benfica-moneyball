@@ -124,6 +124,11 @@ def parse_file(html_path: Path, output_folder: Path):
         else:
             df[col] = df[col].map(clean_numeric)
 
+    # Tag every row with the season (taken from the output folder name, e.g.
+    # "data/processed/2024-25" -> "2024-25") so multi-season files can later be
+    # concatenated safely without relying on folder structure alone.
+    df.insert(0, "Season", output_folder.name)
+
     output_folder.mkdir(parents=True, exist_ok=True)
     out_path = output_folder / f"{html_path.stem}.csv"
     df.to_csv(out_path, index=False)
