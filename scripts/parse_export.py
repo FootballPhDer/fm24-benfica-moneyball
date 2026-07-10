@@ -99,7 +99,14 @@ def parse_file(html_path: Path, output_folder: Path):
 
     df = max(tables, key=len)  # FM export files sometimes wrap the table in extra markup
     df.columns = [str(c).strip() for c in df.columns]
-    df = df.rename(columns=ATTRIBUTE_COLUMN_NAMES)
+
+    # Only expand attribute abbreviations on genuine squad/attribute exports - a handful of
+    # these abbreviations (e.g. "Pos") collide with unrelated columns on other screens
+    # (like the League Table's position/rank column), so require several matches as a
+    # signal this is actually a full-attribute squad view before renaming.
+    attribute_signal_count = sum(1 for col in ATTRIBUTE_COLUMN_NAMES if col in df.columns)
+    if attribute_signal_count >= 5:
+        df = df.rename(columns=ATTRIBUTE_COLUMN_NAMES)
 
     for col in list(df.columns):
         if "value" in col.lower():
