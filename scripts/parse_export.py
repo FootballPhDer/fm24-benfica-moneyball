@@ -1,13 +1,14 @@
 """
-Convert FM24 "Export view" HTML files into clean CSVs.
+Convert FM24 "Export view" files (HTML, or a markdown-style pipe table saved
+as .rtf/.txt) into clean CSVs.
 
 Usage:
-    python parse_export.py <input.html or input folder> <output_folder>
+    python parse_export.py <input file or input folder> <output_folder>
 
-FM's exported views are HTML tables with messy formatting: currency symbols,
-thousands separators, "K"/"M" suffixes, "p/a" wage suffixes, and value
-columns shown as ranges (e.g. "$180K - $2.2M") when a player isn't fully
-scouted. This script reads the table, cleans that formatting, splits range
+FM's exported views have messy formatting: currency symbols, thousands
+separators, "K"/"M" suffixes, "p/a" wage suffixes, and value columns shown as
+ranges (e.g. "$180K - $2.2M") when a player isn't fully scouted. This script
+reads the table (from either format), cleans that formatting, splits range
 columns into low/high, converts numeric-looking columns, and writes a clean
 CSV per input file. Columns that are genuinely text (names, positions,
 nationality codes, dates, personality, etc.) are left untouched, since they
@@ -91,15 +92,58 @@ def split_apps(val):
     return total, (0.0 if total is not None else None)
 
 
-def parse_file(html_path: Path, output_folder: Path):
-    tables = pd.read_html(html_path, encoding="utf-8")
+def load_html_table(path: Path) -> pd.DataFrame | None:
+    tables = pd.read_html(path, encoding="utf-8")
     if not tables:
-        print(f"  no tables found in {html_path.name}, skipping")
-        return
-
+        return None
     df = max(tables, key=len)  # FM export files sometimes wrap the table in extra markup
     df.columns = [str(c).strip() for c in df.columns]
+    return df
 
+
+def load_pipe_table(path: Path) -> pd.DataFrame | None:
+    """Read a markdown-style pipe table (FM sometimes exports these as .rtf/.txt
+    instead of HTML - same data, just '| col | col |' rows with a '|---|---|'
+    separator line, rather than an HTML <table>)."""
+    text = path.read_text(encoding="utf-8")
+    lines = [line for line in text.splitlines() if line.strip()]
+    if len(lines) < 2:
+        return None
+
+    def split_row(line):
+        parts = line.strip().split("|")
+        # leading/trailing "|" produce empty first/last elements - drop them
+        if parts and parts[0] == "":
+            parts = parts[1:]
+        if parts and parts[-1] == "":
+            parts = parts[:-1]
+        return [p.strip() for p in parts]
+
+    is_separator = lambda line: bool(re.fullmatch(r"[\s|:-]+", line))
+
+    headers = dedupe_columns(split_row(lines[0]))
+    data_lines = [line for line in lines[1:] if not is_separator(line)]
+    data_rows = [split_row(line) for line in data_lines]
+    data_rows = [row for row in data_rows if len(row) == len(headers)]
+    if not data_rows:
+        return None
+    return pd.DataFrame(data_rows, columns=headers)
+
+
+def dedupe_columns(headers: list[str]) -> list[str]:
+    """FM's exports reuse a header (e.g. "Nat" for both Nationality and Natural
+    Fitness). pandas.read_html auto-suffixes repeats as "Nat.1", "Nat.2" - mimic
+    that here since building a DataFrame straight from a header list doesn't."""
+    seen = {}
+    deduped = []
+    for header in headers:
+        count = seen.get(header, 0)
+        deduped.append(header if count == 0 else f"{header}.{count}")
+        seen[header] = count + 1
+    return deduped
+
+
+def clean_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     # Only expand attribute abbreviations on genuine squad/attribute exports - a handful of
     # these abbreviations (e.g. "Pos") collide with unrelated columns on other screens
     # (like the League Table's position/rank column), so require several matches as a
@@ -124,13 +168,28 @@ def parse_file(html_path: Path, output_folder: Path):
         else:
             df[col] = df[col].map(clean_numeric)
 
+    return df
+
+
+def parse_file(in_path: Path, output_folder: Path):
+    if in_path.suffix.lower() == ".html":
+        df = load_html_table(in_path)
+    else:
+        df = load_pipe_table(in_path)
+
+    if df is None:
+        print(f"  no table found in {in_path.name}, skipping")
+        return
+
+    df = clean_dataframe(df)
+
     # Tag every row with the season (taken from the output folder name, e.g.
     # "data/processed/2024-25" -> "2024-25") so multi-season files can later be
     # concatenated safely without relying on folder structure alone.
     df.insert(0, "Season", output_folder.name)
 
     output_folder.mkdir(parents=True, exist_ok=True)
-    out_path = output_folder / f"{html_path.stem}.csv"
+    out_path = output_folder / f"{in_path.stem}.csv"
     df.to_csv(out_path, index=False)
     print(f"  wrote {out_path} ({len(df)} rows, {len(df.columns)} cols)")
 
@@ -143,14 +202,19 @@ def main():
     input_path = Path(sys.argv[1])
     output_folder = Path(sys.argv[2])
 
-    html_files = [input_path] if input_path.is_file() else sorted(input_path.glob("*.html"))
-    if not html_files:
-        print(f"No .html files found at {input_path}")
+    supported_exts = (".html", ".rtf", ".txt")
+    if input_path.is_file():
+        input_files = [input_path]
+    else:
+        input_files = sorted(p for p in input_path.iterdir() if p.suffix.lower() in supported_exts)
+
+    if not input_files:
+        print(f"No supported export files ({', '.join(supported_exts)}) found at {input_path}")
         sys.exit(1)
 
-    for html_file in html_files:
-        print(f"Parsing {html_file.name}...")
-        parse_file(html_file, output_folder)
+    for in_file in input_files:
+        print(f"Parsing {in_file.name}...")
+        parse_file(in_file, output_folder)
 
 
 if __name__ == "__main__":
