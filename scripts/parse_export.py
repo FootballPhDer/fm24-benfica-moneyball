@@ -46,7 +46,7 @@ def clean_numeric(val):
     if not isinstance(val, str):
         return val
     stripped = val.strip()
-    if stripped in ("", "-", "N/A"):
+    if stripped in ("", "-", "N/A", "Not for Sale", "Unknown"):
         return None
 
     cleaned = NUMERIC_CLEAN_RE.sub("", stripped).strip()
@@ -71,7 +71,7 @@ def split_range(val):
     if not isinstance(val, str):
         return val, val
     stripped = val.strip()
-    if stripped in ("", "-", "N/A"):
+    if stripped in ("", "-", "N/A", "Not for Sale", "Unknown"):
         return None, None
     if " - " in stripped:
         low, high = stripped.split(" - ", 1)
