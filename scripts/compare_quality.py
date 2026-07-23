@@ -27,6 +27,12 @@ POSITION_GROUPS = {
 }
 
 
+FIRST_TEAM_STATUSES = [
+    "Star Player", "Important Player", "Regular Starter", "Squad Player",
+    "Impact Sub", "First-Choice Goalkeeper",
+]
+
+
 def load(path):
     df = pd.read_csv(path)
     for col in CORE_ATTRS:
@@ -40,9 +46,17 @@ def main():
     benfica = benfica[benfica["Club"] == "Benfica"]
     barca = load(BARCA_PATH)
 
-    # Focus on senior, first-team-relevant players (excludes raw youth/reserves)
-    benfica_senior = benfica[benfica["Age"] >= 20]
-    barca_senior = barca[barca["Age"] >= 20]
+    # Focus on first-team-relevant players. "Agreed Playing Time" is the reliable
+    # signal (Breakthrough Prospect/Fringe Player/Future Prospect/Youngster are
+    # reserves/academy even when their Age happens to be >= 20, e.g. Fonseca).
+    if "Agreed Playing Time" in benfica.columns:
+        benfica_senior = benfica[benfica["Agreed Playing Time"].isin(FIRST_TEAM_STATUSES)]
+    else:
+        benfica_senior = benfica[benfica["Age"] >= 20]
+    if "Agreed Playing Time" in barca.columns:
+        barca_senior = barca[barca["Agreed Playing Time"].isin(FIRST_TEAM_STATUSES)]
+    else:
+        barca_senior = barca[barca["Age"] >= 20]
 
     print(f"Benfica senior squad: {len(benfica_senior)} players")
     print(f"Barcelona senior squad: {len(barca_senior)} players\n")
